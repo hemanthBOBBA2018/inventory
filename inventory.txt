@@ -1,0 +1,35 @@
+db.inventory.find({qty:{$lte:50}})
+
+db.inventory.find({})
+
+db.inventory.find({qty:{$eq:50}})
+
+db.inventory.find({qty:{$eq:50}})
+
+db.inventory.find({qty:{$in:[25,50]}})
+
+db.scores.insertMany([
+{ "_id" : 1521, "team" : "Fearful Mallards", "score" : 25000 },
+{ "_id" : 2231, "team" : "Tactful Mooses", "score" : 23500 },
+{ "_id" : 4511, "team" : "Aquatic Ponies", "score" : 19250 },
+{ "_id" : 5331, "team" : "Cuddly Zebras", "score" : 15235 },
+{ "_id" : 3412, "team" : "Garrulous Bears", "score" : 22300 }
+])
+
+
+db.scores.findOneAndReplace({team:/^[TA]/},{score:0})
+
+
+db.scores.findOneAndDelete({_id:3412})
+
+
+
+
+
+
+
+
+
+
+
+
