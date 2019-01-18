@@ -15,7 +15,7 @@ import com.Hem.service.TeacherService;
 
 @RestController
 public class TeacherController {
-	private Map<String, Teacher> teacherRepo =  null;
+	//private Map<String, Teacher> teacherRepo =  null;
 	
 	@Autowired
 	private TeacherService teacherService;
@@ -23,6 +23,7 @@ public class TeacherController {
 	
 	@RequestMapping(value = "/teachers/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> getTeachers(@PathVariable("id") String id){
+		Map<String, Teacher> teacherRepo =  null;
 		teacherRepo= (Map<String, Teacher>) teacherService.MyService();
 		if (!teacherRepo.containsKey(id))
 			throw new TeacherNotFoundException();
