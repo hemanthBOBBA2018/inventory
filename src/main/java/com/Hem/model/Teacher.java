@@ -1,10 +1,16 @@
-package com.Hem.model;
+package com.hemanth.Model;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "teachers")
 public class Teacher {
-       public String getId() {
+       public ObjectId getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 	public String getFullname() {
@@ -37,10 +43,19 @@ public class Teacher {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
-	private String id;
-       private String fullname;
-       private String qualification;
-       private Character gender;
-       private String address;
-       private String mobileNumber;
+	
+	@Id
+	private ObjectId id;
+	
+	//Query
+	@Indexed
+    private String fullname;
+	
+    private String qualification;
+    private Character gender;
+    private String address;
+    
+    @Indexed
+    private String mobileNumber;
+    
 }
