@@ -16,11 +16,18 @@ public Map<String, Teacher> teacherRepo = new HashMap<String, Teacher>();
 	public
 	void saveTeacherData(Teacher t)
 	{
-		teacherRepo.put(t.getId().toHexString(), t);
+		//teacherRepo.put(t.getId().toHexString(), t);
+		teacherRepo.put(t.getId(), t);
 	}
 
 	@Override
 	public Teacher findTeacher(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Teacher GetTeacher(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

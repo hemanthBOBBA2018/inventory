@@ -28,5 +28,18 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		query.addCriteria(Criteria.where("fullname").is(name));
 		return mongotemp.findOne(query, Teacher.class);
 	}
+	
+	@Override
+	public Teacher GetTeacher(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(id));
+		System.out.println("The value of Id is "+id);
+		
+		return mongotemp.findOne(query, Teacher.class);
+		//Teacher t3 = mongotemp.findOne(query, Teacher.class);
+		//System.out.println("tEACHER Details" +t3);
+		return t3;
+		
+	}
 
 }

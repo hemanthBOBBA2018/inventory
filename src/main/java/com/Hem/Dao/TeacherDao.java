@@ -11,6 +11,8 @@ public interface TeacherDao<Teacher> {
 
 	Teacher findTeacher(String name);
 	
+	Teacher GetTeacher(String id);
+	
 }
 
 
