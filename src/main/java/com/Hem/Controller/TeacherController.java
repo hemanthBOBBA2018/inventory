@@ -2,6 +2,7 @@ package com.hemanth.Controller;
 
 import javax.validation.constraints.NotNull;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,12 @@ public class TeacherController {
 		return teacherService.getTecherDetailsGivenFullName(name);		
 	}
 	
+	
+	@RequestMapping(value = "/teachers/{id}", method = RequestMethod.GET)
+public  Teacher GetTeacherDetailsById(@PathVariable("id") String id) {
+       return teacherService.getSpecificTeacherById(id);
+       
+	}
 	 
 	//public String create(@RequestBody Teacher teacher) {
 		//service.save(teacher);
