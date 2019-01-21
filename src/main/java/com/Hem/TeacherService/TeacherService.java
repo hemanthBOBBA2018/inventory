@@ -1,7 +1,5 @@
 package com.hemanth.Service;
 
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 
@@ -33,28 +31,28 @@ public class TeacherService {
 	//Remove the initTeacherService
 	//Post construct annotatoin
 	
-	/*
-	 * @PostConstruct public void InitTeacherService(){
-	 * 
-	 * System.out.println("I am here in Service Layer"); Teacher t1 = new Teacher();
-	 * 
-	 * t1.setId(new ObjectId(new Date())); t1.setFullname("123"); t1.setGender('M');
-	 * t1.setMobileNumber("9739014678"); t1.setQualification("B.E");
-	 * t1.setAddress("Banashankari");
-	 * 
-	 * DaoImpl.saveTeacherData(t1);
-	 * 
-	 * 
-	 * Teacher t2 = new Teacher(); t2.setId(new ObjectId(new Date()));
-	 * t2.setFullname("Viswanath"); t2.setGender('M');
-	 * t2.setMobileNumber("9739014678"); t2.setQualification("B.E");
-	 * t2.setAddress("Banashankari");
-	 * 
-	 * DaoImpl.saveTeacherData(t2);
-	 * 
-	 * 
-	 * }
-	 */
+	
+	 @PostConstruct public void InitTeacherService(){
+	  
+	  System.out.println("I am here in Service Layer"); Teacher t1 = new Teacher();
+	  
+	  t1.setId("10"); t1.setFullname("123"); t1.setGender('M');
+	  t1.setMobileNumber("9739014678"); t1.setQualification("B.E");
+	  t1.setAddress("Banashankari");
+	  
+	  DaoImpl.saveTeacherData(t1);
+	  
+	  
+	 Teacher t2 = new Teacher(); t2.setId("111");
+	  t2.setFullname("Viswanath"); t2.setGender('M');
+	  t2.setMobileNumber("9739014678"); t2.setQualification("B.E");
+	  t2.setAddress("Banashankari");
+	  
+	  DaoImpl.saveTeacherData(t2);
+	  
+	 }
+	 
+	 
 	
 	     public boolean CheckTeacherId(String id)
 	     {
@@ -69,6 +67,12 @@ public class TeacherService {
 		public Teacher getTecherDetailsGivenFullName(String name) {
 			return DaoImpl.findTeacher(name);
 		}
-	     }
+		
+		public Teacher getSpecificTeacherById(String Id)
+		{
+						return DaoImpl.GetTeacher(Id);
+		}
+		}
+	     
 	
 
