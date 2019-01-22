@@ -1,6 +1,8 @@
 package com.hemanth.Controller;
 
 import java.awt.PageAttributes.MediaType;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hemanth.Model.Teacher;
 import com.hemanth.Service.TeacherService;
+import java.util.List;
 
 @RestController
 public class TeacherController {
@@ -31,13 +34,23 @@ public class TeacherController {
 	//GET MAPPING
 	//GET TEACHER DEATILS
 	
-	//model input -id , output - all the details , where? in-memory ? Dao (TeacherDao) fun -return details -id? , 
+	/*** Retrieve all Teachers ***/
+    @RequestMapping(value="/Teachers",produces="application/json",
+            method=RequestMethod.GET)
+    public List<Teacher> getAllTeachers()
+    {
+        List<Teacher> teacherList = teacherService.getAllTeachers();
+        return teacherList;
+    }
 	
+	
+	//model input -id , output - all the details , where? in-memory ? Dao (TeacherDao) fun -return details -id? , 
+	/*
 	@RequestMapping(value = "/teachers", method = RequestMethod.GET)
 	public Teacher searchTeacherDeatils(@RequestParam("fullname") @NotNull String name){
 		return teacherService.getTecherDetailsGivenFullName(name);		
 	}
-	
+	*/
 	
 	/*
 	@GetMapping(value = "/name={name}", produces=MediaType.APPLICATION_JSON_VALUE)
