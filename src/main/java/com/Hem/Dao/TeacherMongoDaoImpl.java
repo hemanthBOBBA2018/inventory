@@ -1,5 +1,7 @@
 package com.hemanth.Dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,6 +39,23 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		query.addCriteria(Criteria.where("fullname").is(name));
 		return mongotemp.findOne(query, Teacher.class);
 	}
+	
+	@Override
+	public List<Teacher> findAllTeachers() {
+		List<Teacher> teachers = mongotemp.findAll(Teacher.class);
+		
+		for (Teacher temp : teachers) {
+
+	        // I am getting an "null" value instead of the value of the longitude
+	        System.out.println(temp.getFullname());
+
+	        //This displays something like this : mongodb.model.ILites@732cbcd5 (which i don't really understand)
+	        System.out.println(temp);
+	    }
+		return teachers;
+		//return mongotemp.findAll(Teacher.class);
+	}
+	
 	
 	@Override
 	public Teacher GetTeacher(String id) {

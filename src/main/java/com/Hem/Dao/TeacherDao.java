@@ -1,6 +1,8 @@
 package com.hemanth.Dao;
 
 import com.hemanth.Model.Teacher;
+import java.util.List;
+
 
 //no need of genric when you have specifiv dao
 
@@ -13,8 +15,11 @@ public interface TeacherDao<Teacher> {
 	
 	Teacher GetTeacher(String id);
 	
-}
+	Teacher findTeacherByLocation(String address);
 
+	List<Teacher> findAllTeachers();
+	
+}
 
 /*
 //what is genric? is reusablity of code.
