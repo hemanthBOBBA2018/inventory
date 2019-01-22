@@ -6,11 +6,11 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "teachers")
-public class Teacher {
-       public ObjectId getId() {
+public class Teacher extends User {
+       public String getId() {
 		return id;
 	}
-	public void setId(ObjectId id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getFullname() {
@@ -25,18 +25,7 @@ public class Teacher {
 	public void setQualification(String qualification) {
 		this.qualification = qualification;
 	}
-	public Character getGender() {
-		return gender;
-	}
-	public void setGender(Character gender) {
-		this.gender = gender;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
+	
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
@@ -44,16 +33,18 @@ public class Teacher {
 		this.mobileNumber = mobileNumber;
 	}
 	
+	private JobService js;
 	@Id
-	private ObjectId id;
+	//private ObjectId id;
+	private String id;
 	
 	//Query
 	@Indexed
     private String fullname;
 	
     private String qualification;
-    private Character gender;
-    private String address;
+    //private Character gender;
+    //private String address;
     
     @Indexed
     private String mobileNumber;
