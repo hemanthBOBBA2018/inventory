@@ -72,6 +72,17 @@ public class TeacherService {
 		{
 						return DaoImpl.GetTeacher(Id);
 		}
+		
+		public Teacher getTeacherDetailsByLocation(String address) {
+			return DaoImpl.findTeacherByLocation(address);
+		}
+
+
+
+		public void saveTeacher(Teacher newTeacher1) {
+			// TODO Auto-generated method stub
+			DaoImpl.saveTeacherData(newTeacher1);
+		}
 		}
 	     
 	
