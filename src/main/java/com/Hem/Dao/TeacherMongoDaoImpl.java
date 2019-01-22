@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.hemanth.Model.Teacher;
+import com.mongodb.DBCollection;
 
 @Component
 @Qualifier("mongo")
@@ -19,7 +20,15 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 	@Override
 	public void saveTeacherData(Teacher t) {
 		System.out.println("Mongo inster	");
-		mongotemp.save(t);
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(t.getId()));
+		System.out.println("The value of Id while Inserting is "+t.getId());
+				
+		if ( mongotemp.findOne(query, Teacher.class) == null )
+			mongotemp.save(t);
+		else
+			System.out.println("Invalid Teacher Data");
 	}
 
 	@Override
@@ -38,8 +47,15 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		return mongotemp.findOne(query, Teacher.class);
 		//Teacher t3 = mongotemp.findOne(query, Teacher.class);
 		//System.out.println("tEACHER Details" +t3);
-		return t3;
+		//return t3;
 		
+	}
+	
+	@Override
+	public Teacher findTeacherByLocation(String address) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("address").is(address));
+		return mongotemp.findOne(query, Teacher.class);
 	}
 
 }
