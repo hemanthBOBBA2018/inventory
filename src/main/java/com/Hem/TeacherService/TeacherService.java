@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.hemanth.Dao.TeacherDao;
 import com.hemanth.Dao.TeacherDaoImpl;
+//import com.hemanth.Controller.List;
 import com.hemanth.Controller.TeacherNotFoundException;
 import com.hemanth.Model.Teacher;
+import java.util.List;
 
 
 //Every service shoud be interface
@@ -82,6 +84,13 @@ public class TeacherService {
 		public void saveTeacher(Teacher newTeacher1) {
 			// TODO Auto-generated method stub
 			DaoImpl.saveTeacherData(newTeacher1);
+		}
+
+
+
+		public List getAllTeachers() {
+			// TODO Auto-generated method stub
+			return DaoImpl.findAllTeachers();
 		}
 		}
 	     
