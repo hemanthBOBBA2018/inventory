@@ -36,7 +36,7 @@ public class TeacherController {
 	
 	/*** Retrieve all Teachers ***/
     @RequestMapping(value="/Teachers",produces="application/json",
-            method=RequestMethod.GET)
+    		method=RequestMethod.GET)
     public List<Teacher> getAllTeachers()
     {
         List<Teacher> teacherList = teacherService.getAllTeachers();
@@ -45,12 +45,12 @@ public class TeacherController {
 	
 	
 	//model input -id , output - all the details , where? in-memory ? Dao (TeacherDao) fun -return details -id? , 
-	/*
+	
 	@RequestMapping(value = "/teachers", method = RequestMethod.GET)
 	public Teacher searchTeacherDeatils(@RequestParam("fullname") @NotNull String name){
 		return teacherService.getTecherDetailsGivenFullName(name);		
 	}
-	*/
+	
 	
 	/*
 	@GetMapping(value = "/name={name}", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -73,12 +73,29 @@ public  Teacher GetTeacherDetailsById(@PathVariable("id") String id) {
 		return teacherService.getTeacherDetailsByLocation(location);
 	*/
 		
+	          /***Create a new Teacher ***/
               @PostMapping("/teachers")
             	public void createTeacher(@RequestBody Teacher newTeacher1) {
             		 teacherService.saveTeacher(newTeacher1);
                 }  
               
+              
+              /**Update the Teacher Details */
+              @RequestMapping(value="teachers/update", method=RequestMethod.PUT, 
+                      produces="application/json", consumes="application/json")
+              public void updateTeacher(@RequestBody Teacher teacher)
+              {
+                  teacherService.updateTeacher(teacher);
+              }
        
+              
+              /**Delete the Teacher Details*/
+              @RequestMapping(value="teachers/delete/{id}",method = RequestMethod.DELETE,
+                       produces="application/json")
+              public void deleteTeacher(@PathVariable("id") String id)
+              {
+                  teacherService.deleteTeacher(id);
+              }
 	}
 	 
 	//public String create(@RequestBody Teacher teacher) {
