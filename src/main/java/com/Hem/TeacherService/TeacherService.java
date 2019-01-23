@@ -92,6 +92,18 @@ public class TeacherService {
 			// TODO Auto-generated method stub
 			return DaoImpl.findAllTeachers();
 		}
+		
+		public void updateTeacher(Teacher teacher) {
+			DaoImpl.updateTeacher(teacher);
+			
+		}
+
+
+
+		public void deleteTeacher(String id) {
+			// TODO Auto-generated method stub
+			DaoImpl.deleteTeacher(id);
+		}
 		}
 	     
 	
