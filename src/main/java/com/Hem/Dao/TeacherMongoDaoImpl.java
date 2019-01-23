@@ -30,7 +30,7 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		if ( mongotemp.findOne(query, Teacher.class) == null )
 			mongotemp.save(t);
 		else
-			System.out.println("Invalid Teacher Data");
+			System.out.println(" Teacher Not found");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		
 		for (Teacher temp : teachers) {
 
-	        // I am getting an "null" value instead of the value of the longitude
+	        // I am getting an "null" value instead of the value 
 	        System.out.println(temp.getFullname());
 
 	        //This displays something like this : mongodb.model.ILites@732cbcd5 (which i don't really understand)
@@ -63,7 +63,14 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		query.addCriteria(Criteria.where("_id").is(id));
 		System.out.println("The value of Id is "+id);
 		
-		return mongotemp.findOne(query, Teacher.class);
+        Teacher t3 = mongotemp.findOne(query, Teacher.class);
+		
+		if ( t3 == null )
+			System.out.println(" Teacher Not Found");
+		
+		
+		    return t3;
+		
 		//Teacher t3 = mongotemp.findOne(query, Teacher.class);
 		//System.out.println("tEACHER Details" +t3);
 		//return t3;
@@ -76,5 +83,39 @@ public class TeacherMongoDaoImpl implements TeacherDao<Teacher> {
 		query.addCriteria(Criteria.where("address").is(address));
 		return mongotemp.findOne(query, Teacher.class);
 	}
+	
+	
+	@Override
+	public void updateTeacher(Teacher teacher) {
+		// TODO Auto-generated method stub
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(teacher.getId()));
+		System.out.println(teacher.getId());
+		Teacher t3 = mongotemp.findOne(query, Teacher.class);
+		
+		if ( t3 == null )
+			System.out.println(" Teacher not found");
+		else {
+		//Update the required fields
+		t3.setAddress(teacher.getAddress());
+		t3.setQualification(teacher.getQualification());
+		
+		mongotemp.save(t3);
+		}
+	}
+	
+	@Override
+	public void deleteTeacher(String id) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("_id").is(id));
+		
+		if ( mongotemp.findOne(query, Teacher.class) == null )
+			System.out.println("Teacher not found");
+		else {
+			Teacher t3 = mongotemp.findAndRemove(query, Teacher.class);	
+		System.out.println("Deleted document : " +t3);
+		}
+	}
+	
 
 }

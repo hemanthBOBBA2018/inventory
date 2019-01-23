@@ -19,6 +19,10 @@ public interface TeacherDao<Teacher> {
 
 	List<Teacher> findAllTeachers();
 	
+   void updateTeacher(Teacher teacher);
+   
+   void deleteTeacher(String id);
+	
 }
 
 /*

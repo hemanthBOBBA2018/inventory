@@ -45,4 +45,19 @@ public Map<String, Teacher> teacherRepo = new HashMap<String, Teacher>();
 		return null;
 	}
 	
+	
+	@Override
+	public void updateTeacher(Teacher teacher) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void deleteTeacher(String id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 }
