@@ -1,28 +1,27 @@
 package com.hemanth.Dao;
 
 import com.hemanth.Model.Teacher;
+import com.hemanth.search.SearchCritera;
+
 import java.util.List;
 
 
 //no need of genric when you have specifiv dao
 
 //Dao is a repository pattren. 
-public interface TeacherDao<Teacher> {
+public interface TeacherDao {
 	
 	void saveTeacherData(Teacher t);
-
-	Teacher findTeacher(String name);
 	
 	Teacher GetTeacher(String id);
-	
-	Teacher findTeacherByLocation(String address);
 
 	List<Teacher> findAllTeachers();
 	
-   void updateTeacher(Teacher teacher);
+	void updateTeacher(Teacher teacher);
    
-   void deleteTeacher(String id);
-	
+	void deleteTeacher(String id);
+
+   	List<Teacher> getTeachers(SearchCritera searchCriteria);
 }
 
 /*
