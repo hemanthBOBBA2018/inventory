@@ -1,19 +1,18 @@
 package com.hemanth.Service;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotNull;
 
-import org.bson.types.ObjectId;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.hemanth.Dao.TeacherDao;
-import com.hemanth.Dao.TeacherDaoImpl;
-//import com.hemanth.Controller.List;
-import com.hemanth.Controller.TeacherNotFoundException;
 import com.hemanth.Model.Teacher;
-import java.util.List;
+import com.hemanth.search.SearchCritera;
+import com.hemanth.search.SearchCriteraLangException;
+
 
 
 //Every service shoud be interface
@@ -27,32 +26,36 @@ import java.util.List;
 public class TeacherService {
 	
 	@Autowired
-	@Qualifier("mongo")
-	private TeacherDao<Teacher> DaoImpl;
+	private TeacherDao DaoImpl;
 	
+	final static Logger logger = Logger.getLogger(TeacherService.class);
 	//Remove the initTeacherService
 	//Post construct annotatoin
 	
 	
-	 @PostConstruct public void InitTeacherService(){
-	  
-	  System.out.println("I am here in Service Layer"); Teacher t1 = new Teacher();
-	  
-	  t1.setId("10"); t1.setFullname("123"); t1.setGender('M');
-	  t1.setMobileNumber("9739014678"); t1.setQualification("B.E");
-	  t1.setAddress("Banashankari");
-	  
-	  DaoImpl.saveTeacherData(t1);
-	  
-	  
-	 Teacher t2 = new Teacher(); t2.setId("111");
-	  t2.setFullname("Viswanath"); t2.setGender('M');
-	  t2.setMobileNumber("9739014678"); t2.setQualification("B.E");
-	  t2.setAddress("Banashankari");
-	  
-	  DaoImpl.saveTeacherData(t2);
-	  
-	 }
+	/*
+	 * @PostConstruct public void InitTeacherService(){
+	 * 
+	 * // System.out.println("I am here in Service Layer");
+	 * logger.info("This is info : ");
+	 * 
+	 * Teacher t1 = new Teacher();
+	 * 
+	 * t1.setId("10"); t1.setFullname("123"); t1.setGender('M');
+	 * t1.setMobileNumber("9739014678"); t1.setQualification("B.E");
+	 * t1.setAddress("Banashankari");
+	 * 
+	 * DaoImpl.saveTeacherData(t1);
+	 * 
+	 * 
+	 * Teacher t2 = new Teacher(); t2.setId("111"); t2.setFullname("Viswanath");
+	 * t2.setGender('M'); t2.setMobileNumber("9739014678");
+	 * t2.setQualification("B.E"); t2.setAddress("Banashankari");
+	 * 
+	 * DaoImpl.saveTeacherData(t2);
+	 * 
+	 * }
+	 */
 	 
 	 
 	
@@ -66,18 +69,13 @@ public class TeacherService {
 	    	
 	     }
 
-		public Teacher getTecherDetailsGivenFullName(String name) {
-			return DaoImpl.findTeacher(name);
-		}
+		
 		
 		public Teacher getSpecificTeacherById(String Id)
 		{
 						return DaoImpl.GetTeacher(Id);
 		}
 		
-		public Teacher getTeacherDetailsByLocation(String address) {
-			return DaoImpl.findTeacherByLocation(address);
-		}
 
 
 
@@ -88,7 +86,7 @@ public class TeacherService {
 
 
 
-		public List getAllTeachers() {
+		public List<Teacher> getAllTeachers() {
 			// TODO Auto-generated method stub
 			return DaoImpl.findAllTeachers();
 		}
@@ -103,6 +101,16 @@ public class TeacherService {
 		public void deleteTeacher(String id) {
 			// TODO Auto-generated method stub
 			DaoImpl.deleteTeacher(id);
+		}
+
+
+
+		public List<Teacher> getTeachers(String searchCriteria) throws SearchCriteraLangException {
+			
+			SearchCritera sc = SearchCritera.build(searchCriteria);
+			System.out.println(sc);
+			return DaoImpl.getTeachers(sc);
+			
 		}
 		}
 	     
