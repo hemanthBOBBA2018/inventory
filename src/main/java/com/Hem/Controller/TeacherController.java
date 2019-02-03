@@ -45,29 +45,13 @@ public class TeacherController {
 	}
 	*/
 
-	/*
-	 * @GetMapping(value = "/name={name}",
-	 * produces=MediaType.APPLICATION_JSON_VALUE) public Teacher
-	 * searchTeacherDeatils(@PathVariable("name") String name) { return
-	 * teacherService.getTecherDetailsGivenFullName(name); }
-	 */
-
+	
 	@RequestMapping(value = "/teachers/{id}", method = RequestMethod.GET)
 	public Teacher GetTeacherDetailsById(@PathVariable("id") String id) {
 		return teacherService.getSpecificTeacherById(id);
 	}
 
-	/*
-	 * @RequestMapping(value = "/teachers", method = RequestMethod.GET) public
-	 * Teacher SearchTeacherDetailsByLocation(@RequestParam("address") @NotNull
-	 * String address) { return teacherService.getTeacherDetailsByLocation(address);
-	 */
-	/*
-	 * @GetMapping(value = "/location={location}", produces =
-	 * MediaType.APPLICATION_JSON_VALUE) public Teacher
-	 * SearchTeacherDetailsByLocation(@PathVariable("address") String location) {
-	 * return teacherService.getTeacherDetailsByLocation(location);
-	 */
+	
 
 	/*** Create a new Teacher ***/
 	@PostMapping("/teachers")
