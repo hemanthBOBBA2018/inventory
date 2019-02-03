@@ -1,76 +1,52 @@
 package com.hemanth.Controller;
 
-import org.springframework.http.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
-
-import static org.junit.Assert.assertThat;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.*;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-//import static org.junit.Assert.assertThat;
-
-//import static org.junit.Assert.assertThat;
-
-import java.util.*;
-
+import org.apache.tomcat.util.file.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.MockitoAnnotations;
-
-import static org.junit.Assert.assertTrue;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-//import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.result.JsonPathResultMatchers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hemanth.Controller.TeacherController;
 import com.hemanth.Model.Teacher;
 import com.hemanth.MongoInterface.MongoDBInteraction.MongoDbInteractionApplication;
 import com.hemanth.Service.TeacherService;
+import com.hemanth.config.Config;
+import com.hemanth.config.TestConfig;
 
-//@RunWith(SpringRunner.class)
-@SpringBootTest(classes = MongoDbInteractionApplication.class)
-@RunWith(MockitoJUnitRunner.class)
-//@AutoConfigureMockMvc
-//@SpringBootTest
-//@WebAppConfiguration
-@WebMvcTest(value = TeacherController.class, secure = false)
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = TestConfig.class)
+@WebMvcTest(controllers = TeacherController.class)
 public class MongoDbInteractionApplicationTests {
 	
 	@Autowired
 	private MockMvc mockMvc;
 	
+	@MockBean
+	private TeacherService teacherService;
 	
 	
 	//@Autowired
 	//private TeacherController teacherController;
-	
-	@Mock
-	private TeacherService teacherService;
-	
 	
 	@Before
 	public void setup() {
@@ -78,55 +54,83 @@ public class MongoDbInteractionApplicationTests {
 	}
 	
 	@Test
-	public void testGetAllTeachers() throws Exception
-	{
-	Teacher mockTeacher1 = new Teacher("156", "Spring", "10 Steps", "9538169052");
-	Teacher mockTeacher2 = new Teacher("157", "SpringBoot", "10 Steps", "9538169052");
+	public void testGetAllTeachers() throws Exception {
+		
+		Teacher mockTeacher1 = new Teacher("156", "Spring", "10 Steps", "9538169052");
+		Teacher mockTeacher2 = new Teacher("157", "SpringBoot", "10 Steps", "9538169052");
+		
+		
+		List<Teacher> teacherList = new ArrayList<Teacher>();
+		teacherList .add(mockTeacher1);
+		teacherList.add(mockTeacher2);
 	
-	List<Teacher> teacherList = new ArrayList<>();
+		Mockito.when(teacherService.getAllTeachers()).thenReturn(teacherList);
+		mockMvc.perform(MockMvcRequestBuilders.get("/teachers"))
+				      .andExpect(MockMvcResultMatchers.status().isOk())
+				      .andExpect(MockMvcResultMatchers.content()
+				      .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				      .andExpect(jsonPath("$[0].id", is(teacherList.get(0).getId())))
+				      .andExpect(jsonPath("$[1].id", is(teacherList.get(1).getId())));
+		
+	}
 	
-	teacherList.add(mockTeacher1);
-	teacherList.add(mockTeacher2);
+	@Test
+	public void testRegisterTeachers() throws Exception {
+		
+		Teacher mockTeacher1 = new Teacher("156", "Spring", "10 Steps", "9538169052");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String json = mapper.writeValueAsString(mockTeacher1);
+		
+	
+		mockMvc.perform(MockMvcRequestBuilders.post("/teachers").content(json).contentType(MediaType.APPLICATION_JSON))
+				      .andExpect(MockMvcResultMatchers.status().isOk());
+		
+		Mockito.verify(teacherService).saveTeacher(mockTeacher1);
 
-	System.out.println("Before Mockito");
-	System.out.println("teacherService has "+teacherService);
-	Mockito.when(teacherService.getAllTeachers()).thenReturn(teacherList);
-	
-	System.out.println("After Mockito");
-	
-	String URI = "/teachers";
-	
-	//RequestBuilder requestBuilder = MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON);
-	
-	System.out.println("Before MockMvc" +this.mockMvc);
-	//MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-	
-	//MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get(URI).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
-	ResultActions actions = this.mockMvc.perform(get(URI));
-	System.out.println("After MockMvc");
-	
-	//assertTrue(teacherController.getAllTeachers().size()==2);
-	String expectedJson = this.mapToJson(teacherList);
-	
-	//String outputInJson = result.getResponse().getContentAsString();
-	actions.andExpect(status().isOk());
-	
-	//System.out.println(teacherController.getAllTeachers().size());
-	//assertThat(outputInJson).isEqualTo(expectedJson);
-	
-	//JSONAssert.assertEquals(expectedJson, actions.andExpect(status().isOk()), false);
+
 	}
 	
 	
 	@Test
-	public void contextLoads() {
-	}
+	public void testDeleteTeacher() throws Exception {
+		
+        Teacher mockTeacher1 = new Teacher("156", "Spring", "10 Steps", "9538169052");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String json = mapper.writeValueAsString(mockTeacher1);
+		
+	
+		mockMvc.perform(MockMvcRequestBuilders.delete("/teachers/156").content(json).contentType(MediaType.APPLICATION_JSON))
+				      .andExpect(MockMvcResultMatchers.status().isOk());
+		
+		Mockito.verify(teacherService).deleteTeacher("156");
+
+		
+		}
 	
 	
-	private String mapToJson(Object object) throws JsonProcessingException{
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.writeValueAsString(object);
+	@Test
+	public void testUpdateTeacherDetails() throws Exception {
+		
+		Teacher mockTeacher1 = new Teacher("156", "Spring", "10 Steps", "9538169052");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String json = mapper.writeValueAsString(mockTeacher1);
+		
+	
+		mockMvc.perform(MockMvcRequestBuilders.put("/teachers").content(json).contentType(MediaType.APPLICATION_JSON))
+				      .andExpect(MockMvcResultMatchers.status().isOk());
+		
+		Mockito.verify(teacherService).updateTeacher(mockTeacher1);
+
+
+		
 	}
+	
 	
 	}
 
